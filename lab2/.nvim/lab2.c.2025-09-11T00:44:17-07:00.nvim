@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <wait.h>
+
+#define _POSIX_C_SOURCE 200809L
+
+int main() {
+  char *buff = NULL;
+  size_t size = 0;
+  printf("Enter programs to run.\n");
+  if (execl("/usr/bin/ip", "/usr/bin/ip") == -1) {
+        
+    perror("execl");
+  }
+
+  return 0;
+}
