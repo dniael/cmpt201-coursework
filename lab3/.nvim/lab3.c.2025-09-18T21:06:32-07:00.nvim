@@ -1,0 +1,67 @@
+#define _POSIX_C_SOURCE 200809L
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define INPUT_HISTORY_LENGTH 5
+
+void updatehistory(char **arr, char *input);
+void printarray(char **arr);
+
+int main() {
+  char *arr[INPUT_HISTORY_LENGTH] = {NULL};
+
+  int index = 0;
+  char *buff;
+  size_t size = 0;
+
+  while (true) {
+    printf("Enter input: ");
+
+    if (getline(&buff, &size, stdin) == -1) {
+      printf("getline failed.");
+    }
+
+    char *saveptr;
+    char *input = strtok_r(buff, "\n\r", &saveptr);
+
+    if (input == NULL)
+      input = "";
+
+    arr[index] = input;
+    printarray(arr);
+    if (strcmp(input, "print") == 0) {
+      printarray(arr);
+    }
+
+    if (index < 4)
+      index++;
+  }
+
+  free(buff);
+
+  return 0;
+}
+
+int findfirstnull(char **arr, char *c) {
+  for (int i = 0; i < INPUT_HISTORY_LENGTH; i++) {
+    if (arr[i] == NULL) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+void updatehistory(char **arr, char *input) {
+  static int current_index = 0;
+  arr[current_index] = input;
+  if (current_index != INPUT_HISTORY_LENGTH - 1) {
+    current_index++;
+  }
+}
+
+void printarray(char **arr) {
+  printf("%s\n", arr[0]);
+  printf("%s\n", arr[1]); 
+}
